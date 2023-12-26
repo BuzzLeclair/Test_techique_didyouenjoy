@@ -65,6 +65,7 @@ def load_excel_data(filename:str):
         data[order] = xl.parse(order)
     orderid : int = 1
     for order in orders:
+        create_order(orderid, order)
         get_order_from_sheet(data[order], orderid)
         orderid += 1
 
@@ -95,6 +96,10 @@ def get_order_from_sheet(order, orderid: int):
 
 def create_package(orderid:int , packageid: int):
     sql_query = f"INSERT INTO packages (orderid, packageid) VALUES ({orderid}, {packageid})"
+    send_request(sql_query)
+
+def create_order(orderid, order):
+    sql_query = f"INSERT INTO orders (orderid, packageid) VALUES ({orderid}, {order})"
     send_request(sql_query)
 
 load_excel_data('./Orders.xlsx')
